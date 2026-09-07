@@ -1,0 +1,43 @@
+{
+  "project": "ScribeAI — Intelligent Writing Practice Studio",
+  "version": "1.0.0",
+  "convertedFrom": "ai_guided_writing.html (single-file prototype, 590 lines)",
+  "convertedAt": "2026-09-07",
+  "stack": "Vite + React 18 + TypeScript + React Router + Tailwind CSS 3 + Framer Motion + marked",
+  "featurePolicy": "freeze — no features added or removed; 1:1 parity with prototype",
+  "featuresPreserved": [
+    "Header: logo ScribeAI + Live AI Coach badge + theme toggle (localStorage) + Clear All Data",
+    "API Settings: Base URL, API Key, Model select, Refresh (/models), Save Settings, Test (/chat/completions)",
+    "Task/Prompt: textarea, Save prompt, Load saved dropdown (persisted array)",
+    "Draft editor: serif textarea, placeholder, word count, char count, read time, live indicator, save status, Import .txt/.md, auto-save 600ms, localStorage",
+    "Live Critique: Listening/Reviewing.../Live/Error badges, pulse animation, empty state, streaming markdown via marked, SSE parsing, AbortController, fingerprint dedupe, 8-word minimum, 1.5s debounce",
+    "Toasts, dark/light CSS variables, 3-column layout (280px 1fr 340px) responsive"
+  ],
+  "routes": {
+    "/": "Landing — open-source, animated, no fake pricing",
+    "/app": "Studio — production studio with responsive stacked/mobile tabs"
+  },
+  "skillsApplied": {
+    "hallmark": "strict — no AI slop phrases; direct human copy; natural cadence",
+    "impeccable": "strict — grammar/punctuation audited; consistent tone",
+    "frontend-design (anthropic)": "strict — bold The Editor's Desk aesthetic (editorial broadsheet: mono marginalia, hairline rules, pencil marks, block caret glyph), avoids generic purple gradients, emoji icon tiles and system fonts",
+    "ponytail": "strict — minimal abstraction, no over-engineered contexts, explicit timeouts/abort, flat file structure",
+    "magicui": "strict — Marquee, ShimmerButton, DotPattern, BlurFade, BorderBeam vendored as source under MIT; full repo cloned to /magicui per request; attribution in README and component headers"
+  },
+  "designTokens": {
+    "aesthetic": "The Editor's Desk (editorial broadsheet on the Solar Workshop palette)",
+    "light": { "bg": "#FFFBF5", "panel": "#FFFFFF", "border": "#E8E0D6", "text": "#0F1419", "primary": "#FF6B35", "accentInk": "#BC4312" },
+    "dark": { "bg": "#0B0F14", "panel": "#141A22", "border": "#1E2A36", "text": "#F8FAFC", "primary": "#FF7A45", "accentInk": "#FFA37A" },
+    "fonts": { "display": "Bricolage Grotesque", "sans": "DM Sans", "serif": "Newsreader", "mono": "JetBrains Mono" }
+  },
+  "build": {
+    "command": "npm run build (tsc -b && vite build)",
+    "output": "dist/",
+    "verified": true,
+    "bundle": "442.28 kB (139.40 kB gzip) incl. framer-motion; css 23.12 kB"
+  },
+  "responsiveness": "desktop 300px|1fr|380px grid; lg:hidden tabs Write/Critique; settings collapsible drawer; independent scroll on desktop, natural on mobile",
+  "a11y": "label associations, aria-labels on icon buttons, keyboard-focusable controls, color contrast via CSS variables",
+  "docs": ["README.md", "AGENT.md", ".claude/CLAUDE.md", "manifest.json"],
+  "notes": "Prototype preserved as ai_guided_writing.html for audit. MagicUI repo at /magicui is reference only; its node_modules is gitignored."
+}
