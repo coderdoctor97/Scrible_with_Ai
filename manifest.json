@@ -17,6 +17,11 @@
     "/": "Landing — open-source, animated, no fake pricing",
     "/app": "Studio — production studio with responsive stacked/mobile tabs"
   },
+  "branding": {
+    "source": "assets/Icon/ (logo.png light, logo_dark.png dark, icon.png mark — transparent PNGs)",
+    "served": "public/logo.png, public/logo-dark.png, public/icon.png, public/site.webmanifest",
+    "usage": "theme-aware header logo, PNG favicon + apple-touch-icon, webmanifest icons, OG/Twitter image, README header (<picture> with dark/light source)"
+  },
   "skillsApplied": {
     "hallmark": "strict — no AI slop phrases; direct human copy; natural cadence",
     "impeccable": "strict — grammar/punctuation audited; consistent tone",
@@ -24,8 +29,7 @@
     "ponytail": "strict — minimal abstraction, no over-engineered contexts, explicit timeouts/abort, flat file structure",
     "magicui": "strict — Marquee, ShimmerButton, DotPattern, BlurFade, BorderBeam vendored as source under MIT; full repo cloned to /magicui per request; attribution in README and component headers"
   },
-  "designTokens": {
-    "aesthetic": "The Editor's Desk (editorial broadsheet on the Solar Workshop palette)",
+  "designTokens": {    "aesthetic": "The Editor's Desk (editorial broadsheet on the Solar Workshop palette)",
     "light": { "bg": "#FFFBF5", "panel": "#FFFFFF", "border": "#E8E0D6", "text": "#0F1419", "primary": "#FF6B35", "accentInk": "#BC4312" },
     "dark": { "bg": "#0B0F14", "panel": "#141A22", "border": "#1E2A36", "text": "#F8FAFC", "primary": "#FF7A45", "accentInk": "#FFA37A" },
     "fonts": { "display": "Bricolage Grotesque", "sans": "DM Sans", "serif": "Newsreader", "mono": "JetBrains Mono" }

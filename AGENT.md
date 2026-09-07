@@ -20,6 +20,7 @@ This repo was converted from a single-file prototype (`ai_guided_writing.html`) 
 - `src/lib/storage.ts` — `KEYS` and `getLS`/`setLS`. Add new keys here, not ad hoc.
 - `src/components/magicui/` — vendored MagicUI patterns (Marquee, ShimmerButton, DotPattern, BlurFade, BorderBeam). Headers note attribution. Full MagicUI repo is cloned to `/magicui` for reference only.
 - `src/index.css` — design tokens (`:root` / `.dark`), grain, `.prose-ai`.
+- `assets/Icon/` — brand source of truth (`logo.png` light, `logo_dark.png` dark, `icon.png` mark); copied to `public/` (`logo.png`, `logo-dark.png`, `icon.png`) for serving as header logo, favicon, apple-touch-icon, webmanifest + OG image. Header swaps logo by theme; do not reintroduce a text wordmark in the header.
 
 ## Design system
 

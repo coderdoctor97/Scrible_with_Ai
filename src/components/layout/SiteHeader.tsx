@@ -36,7 +36,15 @@ export function SiteHeader({ onToggleTheme }: { onToggleTheme: () => void }) {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    // theme class is applied by AppShell after mount — observe it so logo + toggle icon never go stale
+    const sync = () => setDark(document.documentElement.classList.contains("dark"));
+    sync();
+    const mo = new MutationObserver(sync);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      mo.disconnect();
+    };
   }, []);
 
   const clear = () => {
@@ -60,21 +68,14 @@ export function SiteHeader({ onToggleTheme }: { onToggleTheme: () => void }) {
       }`}
       style={{ borderColor: "var(--border-ink)", background: scrolled ? undefined : "var(--bg)" }}
     >
-      <div className="flex items-baseline gap-3 md:gap-5">
-        <Link to="/" className="flex items-baseline gap-0.5 group" aria-label="ScribeAI home">
-          <span
-            className="text-[19px] font-extrabold tracking-[-0.03em] leading-none"
-            style={{ fontFamily: '"Bricolage Grotesque", sans-serif', color: "var(--text)" }}
-          >
-            Scribe
-          </span>
-          <span className="caret-block !w-[3px] !h-[15px] rounded-[1px]" aria-hidden="true" />
-          <span
-            className="ml-1.5 text-[19px] font-semibold leading-none tracking-[-0.02em]"
-            style={{ fontFamily: '"Newsreader", serif', fontStyle: "italic", color: "var(--accent-ink)" }}
-          >
-            AI
-          </span>
+      <div className="flex items-center gap-3 md:gap-5">
+        <Link to="/" className="group flex items-center" aria-label="ScribeAI home">
+          <img
+            src={dark ? "/logo-dark.png" : "/logo.png"}
+            alt="ScribeAI"
+            className="h-[22px] w-auto"
+            draggable={false}
+          />
         </Link>
         <span className="hairline hidden h-[14px] w-px md:block" style={{ background: "var(--border-ink)" }} />
         <span className="mono-label hidden md:inline-block" style={{ color: "var(--text-faint)" }}>

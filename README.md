@@ -1,8 +1,11 @@
 # ScribeAI — Intelligent Writing Practice Studio
 
-Live, private AI writing coach. Paste a prompt, write your draft, and get streaming critique the moment you pause. 100% open-source, client-side only — your API key never leaves the browser.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/Icon/logo_dark.png" />
+  <img src="assets/Icon/logo.png" alt="ScribeAI — live writing coach" width="420" />
+</picture>
 
-![ScribeAI](public/favicon.svg)
+Live, private AI writing coach. Paste a prompt, write your draft, and get streaming critique the moment you pause. 100% open-source, client-side only — your API key never leaves the browser.
 
 > Ported from a single-file prototype (`ai_guided_writing.html`) to a production React app. No features were added or removed — the goal was responsiveness, polish, and deploy-readiness.
 

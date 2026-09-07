@@ -1,0 +1,14 @@
+{
+  "name": "ScribeAI — Intelligent Writing Practice Studio",
+  "short_name": "ScribeAI",
+  "description": "Open-source AI writing coach. Private, streaming, OpenAI-compatible.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFBF5",
+  "theme_color": "#FF6B35",
+  "icons": [
+    { "src": "/icon.png", "sizes": "1254x1254", "type": "image/png", "purpose": "any" },
+    { "src": "/icon.png", "sizes": "1254x1254", "type": "image/png", "purpose": "maskable" }
+  ]
+}
