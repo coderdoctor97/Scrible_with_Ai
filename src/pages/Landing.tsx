@@ -52,11 +52,11 @@ const FOOTNOTES = [
 
 export default function Landing() {
   return (
-    <div className="overflow-x-hidden" style={{ background: "var(--bg)" }}>
+    <div className="overflow-x-hidden bg-app transition-colors">
       {/* ============ MASTHEAD ============ */}
-      <section className="grain relative" style={{ background: "var(--bg)" }}>
-        {/* metadata strip */}
-        <div className="border-b" style={{ borderColor: "var(--border-ink)" }}>
+      <section className="grain relative bg-app">
+        {/* Metadata strip */}
+        <div className="border-b border-border-ink">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 md:px-6">
             <span className="mono-label">Open source · MIT</span>
             <span className="mono-label hidden sm:inline">Runs entirely in your browser</span>
@@ -65,23 +65,18 @@ export default function Landing() {
         </div>
 
         <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-14 pt-10 md:px-6 md:pb-20 md:pt-14 lg:grid-cols-[2.5rem_1fr_minmax(0,540px)] lg:gap-8">
-          {/* marginalia */}
+          {/* Marginalia */}
           <div className="hidden lg:flex justify-center">
             <span className="marginalia-v mt-2">Fig. A — a live session, looping</span>
           </div>
 
-          {/* headline block */}
+          {/* Headline block */}
           <div>
             <Reveal>
-              <h1
-                className="text-[44px] font-extrabold leading-[0.98] tracking-[-0.03em] sm:text-[56px] md:text-[68px]"
-                style={{ fontFamily: '"Bricolage Grotesque", sans-serif', color: "var(--text)" }}
-              >
+              <h1 className="font-display text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl md:text-6xl lg:text-[68px] text-main">
                 Writing that
                 <br />
-                <span
-                  style={{ fontFamily: '"Newsreader", serif', fontStyle: "italic", fontWeight: 500, color: "var(--accent-ink)", letterSpacing: "-0.01em" }}
-                >
+                <span className="font-serif italic font-medium text-accent-ink tracking-tight">
                   improves
                 </span>{" "}
                 while
@@ -92,7 +87,7 @@ export default function Landing() {
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-6 max-w-[50ch] text-[16px] leading-relaxed md:text-[17.5px]" style={{ color: "var(--text-muted)" }}>
+              <p className="mt-6 max-w-[50ch] text-base leading-relaxed md:text-lg text-muted">
                 ScribeAI is a live writing coach. Paste a prompt, start drafting, and critique
                 streams into the margin the moment you pause. The draft below is a real session,
                 replayed.
@@ -103,18 +98,19 @@ export default function Landing() {
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link
                   to="/app"
-                  className="group inline-flex h-12 items-center rounded-lg px-6 text-[14.5px] font-semibold transition-colors duration-200 hover:bg-[var(--primary-hover)]"
-                  style={{ background: "var(--text)", color: "var(--bg)" }}
+                  className="group inline-flex h-12 items-center rounded-xl bg-main px-6 text-sm font-semibold text-app shadow-sm transition-all duration-200 hover:bg-primary-hover active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  Open the Studio
-                  <span aria-hidden="true" className="ml-2 inline-block transition-transform duration-200 group-hover:translate-x-1" style={{ color: "var(--primary)" }}>
+                  <span>Open the Studio</span>
+                  <span
+                    aria-hidden="true"
+                    className="ml-2 inline-block text-primary transition-transform duration-200 group-hover:translate-x-1"
+                  >
                     →
                   </span>
                 </Link>
                 <a
                   href="#loop"
-                  className="text-[14px] font-semibold underline decoration-[var(--border-ink)] underline-offset-[6px] transition-colors hover:decoration-[var(--primary)]"
-                  style={{ color: "var(--text)" }}
+                  className="text-sm font-semibold text-main underline decoration-border-ink underline-offset-[6px] transition-colors hover:decoration-primary focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   How the loop works
                 </a>
@@ -123,27 +119,27 @@ export default function Landing() {
 
             <Reveal delay={0.28}>
               <div className="mt-10 hidden items-baseline gap-4 sm:flex">
-                <span className="mono-label" style={{ color: "var(--text-faint)" }}>
+                <span className="mono-label text-faint">
                   Bring your own model
                 </span>
-                <span className="hairline mb-1 flex-1" style={{ background: "var(--border-ink)" }} />
-                <span className="mono-label" style={{ color: "var(--text-faint)" }}>
+                <span className="hairline mb-1 flex-1 bg-border-ink" />
+                <span className="mono-label text-faint">
                   OpenAI · Ollama · LM Studio
                 </span>
               </div>
             </Reveal>
           </div>
 
-          {/* live demo */}
+          {/* Live demo */}
           <Reveal delay={0.15} y={20} className="lg:pt-2">
             <WritingDemo />
           </Reveal>
         </div>
 
-        {/* use-case strip */}
-        <div className="border-y" style={{ borderColor: "var(--border-ink)" }}>
+        {/* Use-case strip */}
+        <div className="border-y border-border-ink">
           <div className="mx-auto flex max-w-6xl flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-3.5 md:px-6">
-            <span className="mono-label mr-2" style={{ color: "var(--accent-ink)" }}>
+            <span className="mono-label mr-2 text-accent-ink">
               Start with anything
             </span>
             {USE_CASES.map((u, i) => (
@@ -151,7 +147,7 @@ export default function Landing() {
                 key={u}
                 className={`flex items-baseline gap-3 ${i >= USE_CASES.length - 2 ? "hidden 2xl:flex" : ""}`}
               >
-                {i > 0 && <span aria-hidden="true" className="text-[10px]" style={{ color: "var(--text-faint)" }}>·</span>}
+                {i > 0 && <span aria-hidden="true" className="text-[10px] text-faint">·</span>}
                 <span className="mono-label">{u}</span>
               </span>
             ))}
@@ -174,31 +170,30 @@ export default function Landing() {
         />
 
         <div className="relative mt-14">
-          {/* the rule */}
+          {/* The rule */}
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 1.1, ease: [0.25, 0.4, 0.25, 1] }}
-            className="absolute left-0 right-0 top-[7px] hidden h-px origin-left md:block"
-            style={{ background: "var(--primary)" }}
+            className="absolute left-0 right-0 top-[7px] hidden h-px origin-left bg-primary md:block"
           />
-          <div className="absolute left-[7px] top-0 h-full w-px md:hidden" style={{ background: "var(--primary)" }} />
+          <div className="absolute left-[7px] top-0 h-full w-px bg-primary md:hidden" />
 
           <div className="grid gap-10 md:grid-cols-4 md:gap-6">
             {LOOP.map((s, i) => (
               <Reveal key={s.n} delay={i * 0.1}>
                 <div className="flex gap-5 md:block">
-                  <span className="mt-1 inline-block h-[15px] w-[15px] shrink-0 rounded-full border-2 bg-[var(--bg)]" style={{ borderColor: "var(--primary)" }} aria-hidden="true" />
+                  <span
+                    className="mt-1 inline-block h-[15px] w-[15px] shrink-0 rounded-full border-2 border-primary bg-app"
+                    aria-hidden="true"
+                  />
                   <div>
-                    <div className="mono-label" style={{ color: "var(--text-faint)" }}>{s.n}</div>
-                    <h3
-                      className="mt-1.5 text-[19px] font-bold tracking-[-0.01em] md:mt-2"
-                      style={{ fontFamily: '"Bricolage Grotesque", sans-serif', color: "var(--text)" }}
-                    >
+                    <div className="mono-label text-faint">{s.n}</div>
+                    <h3 className="font-display mt-1.5 text-lg font-bold tracking-tight text-main md:mt-2">
                       {s.title}
                     </h3>
-                    <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
                       {s.desc}
                     </p>
                   </div>
@@ -209,14 +204,14 @@ export default function Landing() {
         </div>
 
         <Reveal delay={0.15}>
-          <p className="mono-label mt-12" style={{ color: "var(--text-faint)" }}>
+          <p className="mono-label mt-12 text-faint">
             Footnote — feedback starts at eight words; typing again aborts the stream instantly
           </p>
         </Reveal>
       </section>
 
       {/* ============ Nº 02 — THE MARK-UP ============ */}
-      <section id="markup" className="border-y scroll-mt-20" style={{ borderColor: "var(--border-ink)", background: "var(--panel-soft)" }}>
+      <section id="markup" className="border-y border-border-ink bg-panel-soft/60 scroll-mt-20">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
           <SectionHead
             no="02"
@@ -227,23 +222,20 @@ export default function Landing() {
                 not a chatbot.
               </>
             }
-            standfirst="Every critique arrives in the same four marks — a scorecard, what works, what to do next, and one concrete rewrite you can steal. Here is a real pass, on paper."
+            standfirst="Every critique arrives in the same four marks — a scorecard, what works, what to do next, and one concrete rewrite you can steal. Here is how that looks in practice."
           />
 
-          <div className="mt-14 grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
-            {/* manuscript */}
+          <div className="mt-14 grid gap-8 lg:grid-cols-[1.25fr_1fr]">
+            {/* Manuscript preview */}
             <Reveal>
-              <div className="relative border bg-[var(--panel)] p-6 md:p-9" style={{ borderColor: "var(--border-ink)", boxShadow: "var(--shadow)" }}>
+              <div className="bento-card relative rounded-xl border border-border-ink bg-panel p-6 shadow-subtle md:p-8">
                 <div className="flex items-center justify-between">
-                  <span className="mono-label" style={{ color: "var(--text-faint)" }}>
+                  <span className="mono-label text-faint">
                     Prompt — “Describe an old man in a square.”
                   </span>
-                  <span className="mono-label hidden sm:inline" style={{ color: "var(--text-faint)" }}>Draft · 31 words</span>
+                  <span className="mono-label hidden text-faint sm:inline">Draft · 31 words</span>
                 </div>
-                <p
-                  className="mt-6 text-[18px] leading-[1.85] md:text-[20px]"
-                  style={{ fontFamily: '"Newsreader", Georgia, serif', color: "var(--text)" }}
-                >
+                <p className="font-serif mt-6 text-lg leading-[1.85] text-main md:text-xl">
                   The old man walked <span className="mk-strike">very slowly</span>{" "}
                   <span className="mk-ins">as if the square belonged to him</span> across the
                   morning square, stopping to feed the pigeons that gathered at his feet like a
@@ -251,28 +243,31 @@ export default function Landing() {
                 </p>
                 <div className="mt-8 flex items-baseline gap-3">
                   <span className="mk-note">Editor's pencil</span>
-                  <span className="hairline mb-1 flex-1" style={{ background: "var(--border-ink)" }} />
-                  <span className="mono-label" style={{ color: "var(--text-faint)" }}>1 of 4 marks shown</span>
+                  <span className="hairline mb-1 flex-1 bg-border-ink" />
+                  <span className="mono-label text-faint">1 of 4 marks shown</span>
                 </div>
               </div>
             </Reveal>
 
-            {/* margin notes */}
+            {/* Margin notes */}
             <Reveal delay={0.12}>
-              <div className="flex h-full flex-col justify-center gap-6 lg:pl-2">
+              <div className="flex h-full flex-col justify-center gap-5 lg:pl-2">
                 {MARKUP_NOTES.map((n) => (
                   <div
                     key={n.tag}
-                    className={n.accent ? "border-l-2 pl-4" : "border-l pl-4"}
-                    style={{ borderColor: n.accent ? "var(--primary)" : "var(--border-ink)" }}
+                    className={`border-l-2 pl-4 rounded-r-lg bg-panel/40 p-3 ${
+                      n.accent ? "border-primary" : "border-border-ink"
+                    }`}
                   >
-                    <div className="mk-note" style={n.accent ? undefined : { color: "var(--text-faint)" }}>{n.tag}</div>
-                    <p className="mt-1 text-[14px] leading-relaxed" style={{ color: "var(--text)" }}>
+                    <div className="mk-note" style={n.accent ? undefined : { color: "var(--text-faint)" }}>
+                      {n.tag}
+                    </div>
+                    <p className="mt-1 text-sm leading-relaxed text-main">
                       {n.text}
                     </p>
                   </div>
                 ))}
-                <p className="mono-label lg:pl-5" style={{ color: "var(--text-faint)" }}>
+                <p className="mono-label text-faint lg:pl-4">
                   Streaming live while you keep writing
                 </p>
               </div>
@@ -281,7 +276,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ============ Nº 03 — THE STUDIO ============ */}
+      {/* ============ Nº 03 — THE STUDIO BENTO ============ */}
       <section id="studio" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 md:px-6 md:py-24">
         <SectionHead
           no="03"
@@ -290,56 +285,60 @@ export default function Landing() {
         />
 
         <Reveal delay={0.1}>
-          <div className="graph-paper relative mt-14 rounded-lg border p-4 md:p-8" style={{ borderColor: "var(--border-ink)", background: "var(--panel)" }}>
-            <div className="grid gap-3 md:grid-cols-[240px_1fr_300px]">
+          <div className="graph-paper relative mt-14 rounded-2xl border border-border-ink bg-panel p-4 shadow-elevated md:p-8">
+            <div className="grid gap-3.5 md:grid-cols-[240px_1fr_300px]">
               {/* 01 settings */}
-              <div className="flex flex-col rounded-md border bg-[var(--bg)]" style={{ borderColor: "var(--border-ink)" }}>
-                <div className="border-b px-3 py-2" style={{ borderColor: "var(--border-ink)" }}>
-                  <span className="mono-label" style={{ color: "var(--text-faint)" }}>01 · Settings — 300px</span>
+              <div className="flex flex-col rounded-xl border border-border-ink bg-app shadow-sm">
+                <div className="border-b border-border-ink px-3 py-2.5 bg-panel-soft/60">
+                  <span className="mono-label text-faint">01 · Settings — 300px</span>
                 </div>
-                <div className="flex flex-1 flex-col gap-2.5 p-3">
+                <div className="flex flex-1 flex-col gap-2.5 p-3.5">
                   {[86, 100, 72].map((w, i) => (
-                    <div key={i} className="h-6 rounded-[3px] border" style={{ width: `${w}%`, borderColor: "var(--border)", background: "var(--panel-soft)" }} />
+                    <div
+                      key={i}
+                      className="h-6 rounded-md border border-border bg-panel-soft"
+                      style={{ width: `${w}%` }}
+                    />
                   ))}
-                  <div className="mt-1 h-7 w-[62%] rounded-[3px]" style={{ background: "var(--text)" }} />
+                  <div className="mt-1 h-7 w-[62%] rounded-md bg-main" />
                 </div>
               </div>
               {/* 02 draft */}
-              <div className="flex flex-col rounded-md border bg-[var(--bg)]" style={{ borderColor: "var(--border-ink)" }}>
-                <div className="border-b px-3 py-2" style={{ borderColor: "var(--border-ink)" }}>
-                  <span className="mono-label" style={{ color: "var(--text-faint)" }}>02 · Draft — fluid</span>
+              <div className="flex flex-col rounded-xl border border-border-ink bg-app shadow-sm">
+                <div className="border-b border-border-ink px-3 py-2.5 bg-panel-soft/60">
+                  <span className="mono-label text-faint">02 · Draft — fluid canvas</span>
                 </div>
                 <div className="flex-1 p-4">
-                  <p className="text-[14px] leading-[1.9]" style={{ fontFamily: '"Newsreader", Georgia, serif', color: "var(--text-muted)" }}>
+                  <p className="font-serif text-sm leading-[1.85] text-muted">
                     The review is due Friday, and yet the memo keeps circling the same three
                     sentences…
                     <span className="caret-block ml-0.5" aria-hidden="true" />
                   </p>
                 </div>
-                <div className="flex justify-between border-t px-3 py-2" style={{ borderColor: "var(--border-ink)" }}>
-                  <span className="mono-label" style={{ color: "var(--text-faint)" }}>Words · chars · read time</span>
-                  <span className="mono-label" style={{ color: "var(--success)" }}>Up to date</span>
+                <div className="flex justify-between border-t border-border-ink px-3 py-2 bg-panel-soft/60 font-mono text-xs">
+                  <span className="mono-label text-faint">Words · chars · read</span>
+                  <span className="mono-label text-success">Up to date</span>
                 </div>
               </div>
               {/* 03 critique */}
-              <div className="flex flex-col rounded-md border bg-[var(--bg)]" style={{ borderColor: "var(--border-ink)" }}>
-                <div className="border-b px-3 py-2" style={{ borderColor: "var(--border-ink)" }}>
-                  <span className="mono-label" style={{ color: "var(--accent-ink)" }}>03 · Live critique — 380px</span>
+              <div className="flex flex-col rounded-xl border border-border-ink bg-app shadow-sm">
+                <div className="border-b border-border-ink px-3 py-2.5 bg-panel-soft/60">
+                  <span className="mono-label text-accent-ink">03 · Live critique — 380px</span>
                 </div>
-                <div className="flex flex-1 flex-col gap-2.5 p-3">
+                <div className="flex flex-1 flex-col gap-2.5 p-3.5">
                   {["Scorecard", "Strengths", "Next steps", "Suggestion"].map((t) => (
-                    <div key={t} className="border-l-2 pl-2.5" style={{ borderColor: "var(--primary)" }}>
+                    <div key={t} className="border-l-2 border-primary pl-2.5 py-0.5">
                       <span className="mk-note">{t}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-            {/* dimension ticks */}
-            <div className="mt-3 hidden items-center justify-between md:flex">
-              <span className="mono-label" style={{ color: "var(--text-faint)" }}>├─ 300px ─┤</span>
-              <span className="mono-label" style={{ color: "var(--text-faint)" }}>├──── fluid ────┤</span>
-              <span className="mono-label" style={{ color: "var(--text-faint)" }}>├─ 380px ─┤</span>
+            {/* Dimension ticks */}
+            <div className="mt-3.5 hidden items-center justify-between font-mono text-xs md:flex">
+              <span className="mono-label text-faint">├─ 300px ─┤</span>
+              <span className="mono-label text-faint">├──── fluid canvas ────┤</span>
+              <span className="mono-label text-faint">├─ 380px ─┤</span>
             </div>
           </div>
         </Reveal>
@@ -348,13 +347,12 @@ export default function Landing() {
           <div className="mt-8 flex flex-wrap items-center gap-5">
             <Link
               to="/app"
-              className="group inline-flex h-11 items-center rounded-lg px-5 text-[14px] font-semibold transition-colors hover:bg-[var(--primary-hover)]"
-              style={{ background: "var(--text)", color: "var(--bg)" }}
+              className="group inline-flex h-11 items-center rounded-xl bg-main px-5 text-sm font-semibold text-app shadow-sm transition-all hover:bg-primary-hover active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary"
             >
-              Open the Studio
-              <span aria-hidden="true" className="ml-2 transition-transform duration-200 group-hover:translate-x-1" style={{ color: "var(--primary)" }}>→</span>
+              <span>Open the Studio</span>
+              <span aria-hidden="true" className="ml-2 text-primary transition-transform duration-200 group-hover:translate-x-1">→</span>
             </Link>
-            <span className="mono-label" style={{ color: "var(--text-faint)" }}>
+            <span className="mono-label text-faint">
               Import .txt / .md · saved prompt library · light & dark
             </span>
           </div>
@@ -362,25 +360,22 @@ export default function Landing() {
       </section>
 
       {/* ============ MANIFESTO ============ */}
-      <section className="border-t" style={{ borderColor: "var(--border-ink)", background: "var(--panel-soft)" }}>
+      <section className="border-t border-border-ink bg-panel-soft/60">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
           <Reveal>
-            <p
-              className="max-w-[22ch] text-[34px] leading-[1.15] tracking-[-0.01em] sm:max-w-[28ch] md:text-[46px]"
-              style={{ fontFamily: '"Newsreader", serif', fontStyle: "italic", fontWeight: 500, color: "var(--text)" }}
-            >
+            <p className="font-serif italic font-medium max-w-[22ch] text-3xl leading-[1.15] tracking-tight sm:max-w-[28ch] md:text-4xl lg:text-5xl text-main">
               Your words never leave{" "}
-              <span style={{ color: "var(--accent-ink)" }}>your machine.</span>
+              <span className="text-accent-ink">your machine.</span>
             </p>
           </Reveal>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3 md:gap-10">
             {FOOTNOTES.map((f, i) => (
               <Reveal key={f.n} delay={i * 0.08}>
-                <div className="border-t pt-4" style={{ borderColor: "var(--border-ink)" }}>
-                  <span className="mono-label" style={{ color: "var(--text-faint)" }}>{f.n}</span>
-                  <h3 className="mt-2 text-[15px] font-bold" style={{ color: "var(--text)" }}>{f.t}</h3>
-                  <p className="mt-1.5 text-[13.5px] leading-relaxed" style={{ color: "var(--text-muted)" }}>{f.d}</p>
+                <div className="border-t border-border-ink pt-4">
+                  <span className="mono-label text-faint">{f.n}</span>
+                  <h3 className="mt-2 text-base font-bold text-main">{f.t}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted">{f.d}</p>
                 </div>
               </Reveal>
             ))}
@@ -389,27 +384,23 @@ export default function Landing() {
       </section>
 
       {/* ============ INK CTA ============ */}
-      <section style={{ background: "var(--text)" }}>
+      <section className="bg-main text-app">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-16 md:flex-row md:items-end md:justify-between md:px-6 md:py-20">
           <Reveal>
-            <p className="mono-label" style={{ color: "var(--text-faint)" }}>
+            <p className="mono-label text-faint">
               Ready when you are
             </p>
-            <h2
-              className="mt-3 max-w-[20ch] text-[34px] font-extrabold leading-[1.02] tracking-[-0.025em] md:text-[48px]"
-              style={{ fontFamily: '"Bricolage Grotesque", sans-serif', color: "var(--bg)" }}
-            >
+            <h2 className="font-display mt-3 max-w-[20ch] text-3xl font-extrabold leading-[1.02] tracking-tight md:text-4xl lg:text-5xl text-app">
               Start writing. Get feedback before you overthink.
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
             <Link
               to="/app"
-              className="group inline-flex h-13 shrink-0 items-center gap-2 rounded-lg px-7 py-4 text-[15px] font-bold transition-colors hover:bg-[var(--primary)]"
-              style={{ background: "var(--bg)", color: "var(--text)" }}
+              className="group inline-flex h-13 shrink-0 items-center gap-2 rounded-xl bg-app px-7 py-4 text-base font-bold text-main shadow-lg transition-all hover:bg-primary hover:text-white active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary"
             >
-              Open the Studio
-              <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1" style={{ color: "var(--primary)" }}>→</span>
+              <span>Open the Studio</span>
+              <span aria-hidden="true" className="text-primary group-hover:text-white transition-transform duration-200 group-hover:translate-x-1">→</span>
             </Link>
           </Reveal>
         </div>

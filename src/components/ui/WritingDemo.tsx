@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "../../lib/utils";
+import { BorderBeam } from "../magicui/BorderBeam";
 
 type Note = { tag: string; text: string };
 type Scene = { prompt: string; draft: string; notes: Note[] };
@@ -29,30 +31,60 @@ const SCENES: Scene[] = [
 
 type Status = "Listening" | "Typing" | "Reviewing" | "Live";
 
-const STATUS_META: Record<Status, { dot: string; label: string; pulse?: boolean }> = {
-  Listening: { dot: "var(--text-faint)", label: "Listening" },
-  Typing: { dot: "var(--primary)", label: "Typing…" },
-  Reviewing: { dot: "var(--primary)", label: "Reviewing…", pulse: true },
-  Live: { dot: "var(--success)", label: "Live" },
+const STATUS_META: Record<
+  Status,
+  { dot: string; label: string; chipCls: string; pulse?: boolean }
+> = {
+  Listening: {
+    dot: "bg-faint",
+    label: "Listening",
+    chipCls: "border-border text-faint bg-panel",
+  },
+  Typing: {
+    dot: "bg-primary",
+    label: "Typing…",
+    chipCls: "border-primary/30 text-primary bg-primary/10",
+  },
+  Reviewing: {
+    dot: "bg-primary animate-ping",
+    label: "Reviewing…",
+    chipCls: "border-primary/40 text-primary bg-primary/10 animate-pulse",
+    pulse: true,
+  },
+  Live: {
+    dot: "bg-success",
+    label: "Live",
+    chipCls: "border-success/30 text-success bg-success/10",
+  },
 };
 
 export function WritingDemo() {
   const reduced = useMemo(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     []
   );
   const [sceneIndex, setSceneIndex] = useState(0);
   const [text, setText] = useState(() => (reduced ? SCENES[0].draft : ""));
-  const [notesShown, setNotesShown] = useState(() => (reduced ? SCENES[0].notes.length : 0));
-  const [status, setStatus] = useState<Status>(() => (reduced ? "Live" : "Listening"));
+  const [notesShown, setNotesShown] = useState(() =>
+    reduced ? SCENES[0].notes.length : 0
+  );
+  const [status, setStatus] = useState<Status>(() =>
+    reduced ? "Live" : "Listening"
+  );
 
   const scene = SCENES[sceneIndex % SCENES.length];
-  const words = useMemo(() => (text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0), [text]);
+  const words = useMemo(
+    () => (text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0),
+    [text]
+  );
 
   useEffect(() => {
     if (reduced) return;
     const timers: number[] = [];
-    const later = (fn: () => void, ms: number) => timers.push(window.setTimeout(fn, ms));
+    const later = (fn: () => void, ms: number) =>
+      timers.push(window.setTimeout(fn, ms));
 
     const runScene = (i: number) => {
       const s = SCENES[i % SCENES.length];
@@ -81,97 +113,91 @@ export function WritingDemo() {
 
     runScene(0);
     return () => timers.forEach((id) => window.clearTimeout(id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reduced]);
 
   const meta = STATUS_META[status];
 
   return (
-    <div
-      className="relative overflow-hidden rounded-lg border bg-[var(--panel)]"
-      style={{ borderColor: "var(--border-ink)", boxShadow: "var(--shadow-lg)" }}
-    >
-      {/* sheet header */}
-      <div
-        className="flex items-center justify-between border-b px-4 py-2.5 md:px-5"
-        style={{ borderColor: "var(--border-ink)", background: "var(--panel-soft)" }}
-      >
-        <span className="mono-label" style={{ color: "var(--text-faint)" }}>
-          Draft — live session
+    <div className="relative overflow-hidden rounded-xl border border-border-ink bg-panel shadow-elevated">
+      <BorderBeam size={220} duration={12} colorFrom="#FF6B35" colorTo="#0D9488" />
+
+      {/* Sheet header */}
+      <div className="flex items-center justify-between border-b border-border-ink bg-panel-soft/80 px-4 py-3 md:px-5">
+        <span className="mono-label text-faint">
+          Draft Session · Interactive Replay
         </span>
         <span
-          className={`inline-flex items-center gap-2 rounded-full border px-2.5 py-1 ${meta.pulse ? "animate-pulse" : ""}`}
-          style={{ borderColor: "var(--border)", background: "var(--panel)" }}
+          className={cn(
+            "inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-all duration-200",
+            meta.chipCls
+          )}
         >
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: meta.dot }} />
-          <span className="mono-label !tracking-[0.1em]" style={{ color: status === "Live" ? "var(--success)" : status === "Listening" ? "var(--text-faint)" : "var(--accent-ink)" }}>
+          <span className={cn("h-1.5 w-1.5 rounded-full", meta.dot)} />
+          <span className="mono-label !tracking-wider text-[10px]">
             {meta.label}
           </span>
         </span>
       </div>
 
       <div className="grid md:grid-cols-[1.35fr_1fr]">
-        {/* manuscript */}
-        <div className="border-b px-4 py-5 md:border-b-0 md:border-r md:px-6 md:py-6" style={{ borderColor: "var(--border-ink)" }}>
-          <p className="mono-label mb-3" style={{ color: "var(--text-faint)" }}>
+        {/* Manuscript */}
+        <div className="border-b border-border-ink px-5 py-6 md:border-b-0 md:border-r md:px-6">
+          <p className="mono-label mb-3 text-faint">
             Prompt — “{scene.prompt}”
           </p>
-          <p
-            className="min-h-[9.5rem] text-[15.5px] leading-[1.75] md:min-h-[10.5rem] md:text-[16.5px]"
-            style={{ fontFamily: '"Newsreader", Georgia, serif', color: "var(--text)" }}
-          >
+          <p className="min-h-[9.5rem] font-serif text-[16px] leading-[1.78] text-main md:min-h-[10.5rem] md:text-[17px]">
             {text}
-            {(status === "Typing" || status === "Listening") && <span className="caret-block ml-0.5" aria-hidden="true" />}
+            {(status === "Typing" || status === "Listening") && (
+              <span className="caret-block ml-0.5" aria-hidden="true" />
+            )}
           </p>
-          <div className="mt-4 flex items-center justify-between" style={{ color: "var(--text-faint)" }}>
+          <div className="mt-4 flex items-center justify-between font-mono text-xs tabular-nums text-faint">
             <span className="mono-label">{words} words</span>
             <span className="mono-label">Auto-saved</span>
           </div>
         </div>
 
-        {/* margin notes */}
-        <div className="px-4 py-5 md:px-5 md:py-6">
-          <p className="mono-label mb-3" style={{ color: "var(--accent-ink)" }}>
+        {/* Margin notes */}
+        <div className="bg-panel-soft/40 px-5 py-6">
+          <p className="mono-label mb-3 text-accent-ink">
             Coach — marks in the margin
           </p>
-          <div className="flex min-h-[9.5rem] flex-col gap-2.5 md:min-h-[10.5rem]">
+          <div className="flex min-h-[9.5rem] flex-col gap-3 md:min-h-[10.5rem]">
             <AnimatePresence mode="popLayout">
               {scene.notes.slice(0, notesShown).map((n) => (
                 <motion.div
                   key={`${sceneIndex}-${n.tag}`}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="border-l-2 pl-3"
-                  style={{ borderColor: "var(--primary)" }}
+                  initial={{ opacity: 0, x: 12, scale: 0.96 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                  className="rounded-r-lg border-l-2 border-primary bg-panel/60 p-2.5 shadow-sm"
                 >
                   <div className="mk-note">{n.tag}</div>
-                  <div className="mt-0.5 text-[12.5px] leading-relaxed" style={{ color: "var(--text)" }}>
+                  <div className="mt-1 text-xs leading-relaxed text-main">
                     {n.text}
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
             {notesShown === 0 && (
-              <p className="text-[12.5px] leading-relaxed" style={{ color: "var(--text-faint)" }}>
-                {status === "Reviewing" ? "Reading your draft…" : "Marks appear here the moment you pause."}
+              <p className="text-xs leading-relaxed text-faint">
+                {status === "Reviewing"
+                  ? "Evaluating draft rhythm…"
+                  : "Critique streams here the moment you pause."}
               </p>
             )}
           </div>
         </div>
       </div>
 
-      {/* sheet footer */}
-      <div
-        className="flex items-center justify-between border-t px-4 py-2 md:px-5"
-        style={{ borderColor: "var(--border-ink)", background: "var(--panel-soft)" }}
-      >
-        <span className="mono-label" style={{ color: "var(--text-faint)" }}>
+      {/* Sheet footer */}
+      <div className="flex items-center justify-between border-t border-border-ink bg-panel-soft/80 px-4 py-2.5 md:px-5">
+        <span className="mono-label text-faint">
           1.5 s pause · 8-word minimum
         </span>
-        <span className="mono-label" style={{ color: "var(--text-faint)" }}>
-          Streaming markdown
+        <span className="mono-label text-faint">
+          Streaming Markdown
         </span>
       </div>
     </div>

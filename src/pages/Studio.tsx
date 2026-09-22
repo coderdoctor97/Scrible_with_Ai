@@ -4,29 +4,28 @@ import { KEYS, getLS, getSavedPrompts, setLS } from "../lib/storage";
 import { fetchModels, streamCritique, testConnection } from "../lib/api";
 import { useToast } from "../hooks/useToast";
 import { ToastStack } from "../components/ui/Toast";
+import { cn } from "../lib/utils";
 
 const inputCls =
-  "w-full rounded-md border px-3 py-2.5 text-[13px] outline-none transition-shadow focus:border-[var(--primary)] focus:ring-2 focus:ring-[rgba(255,107,53,0.18)]";
-const inputStyle = { borderColor: "var(--border)", background: "var(--input-bg)", color: "var(--text)" } as const;
+  "w-full rounded-lg border border-border bg-input-bg px-3.5 py-2 text-sm text-main placeholder:text-faint outline-none transition-all duration-150 focus:border-primary focus:ring-2 focus:ring-primary/20";
 
 function GearIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="3.2" />
-      <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.08a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.08a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1Z" />
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
     </svg>
   );
 }
 
 function ImportIcon() {
   return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 3v11M7.5 9.5 12 14l4.5-4.5M4 17v2.2A1.8 1.8 0 0 0 5.8 21h12.4a1.8 1.8 0 0 0 1.8-1.8V17" />
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3v12M8 11l4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
     </svg>
   );
 }
 
-// --- Studio page: 1:1 parity with prototype, production-grade responsive ---
 export default function Studio() {
   // persisted state — mirrors prototype's `state` object
   const [apiBase, setApiBase] = useState(() => getLS(KEYS.apiBase, "https://api.openai.com/v1"));
@@ -62,6 +61,7 @@ export default function Studio() {
   const liveTimer = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const feedbackRef = useRef<HTMLDivElement>(null);
+
   // refs mirroring the latest draft/prompt so debounced callbacks never read a stale closure
   const draftRef = useRef(draft);
   const promptRef = useRef(prompt);
@@ -165,7 +165,7 @@ export default function Studio() {
         setCoachStatus("Error");
         setLiveLabel("⚠️ API error");
         setLiveColor("var(--danger)");
-        setFeedbackHtml(`<div style="color:var(--danger)">Feedback stream error: ${e?.message || "Unknown"}</div>`);
+        setFeedbackHtml(`<div class="text-danger font-medium p-3 rounded-lg bg-danger/10 border border-danger/20">Feedback stream error: ${e?.message || "Unknown"}</div>`);
       }
     } finally {
       abortRef.current = null;
@@ -240,18 +240,26 @@ export default function Studio() {
   const statusChip = (s: string) => {
     const reviewing = s === "Reviewing...";
     const error = s === "Error";
+    const live = s === "Live";
+
     return (
       <span
-        className={`mono-label inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 !text-[10px] ${reviewing ? "animate-pulse" : ""}`}
-        style={{
-          borderColor: "var(--border)",
-          background: "var(--panel)",
-          color: error ? "var(--danger)" : reviewing ? "var(--accent-ink)" : s === "Live" ? "var(--success)" : "var(--text-faint)",
-        }}
+        className={cn(
+          "mono-label inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-semibold transition-all duration-200",
+          live && "border-success/30 bg-success/10 text-success",
+          reviewing && "border-primary/30 bg-primary/10 text-primary animate-pulse",
+          error && "border-danger/30 bg-danger/10 text-danger",
+          !live && !reviewing && !error && "border-border bg-panel text-faint"
+        )}
       >
         <span
-          className="h-1.5 w-1.5 rounded-full"
-          style={{ background: error ? "var(--danger)" : reviewing ? "var(--primary)" : s === "Live" ? "var(--success)" : "var(--text-faint)" }}
+          className={cn(
+            "h-1.5 w-1.5 rounded-full transition-colors",
+            live && "bg-success",
+            reviewing && "bg-primary animate-ping",
+            error && "bg-danger",
+            !live && !reviewing && !error && "bg-faint"
+          )}
         />
         {s}
       </span>
@@ -259,23 +267,23 @@ export default function Studio() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-56px)] flex-col" style={{ background: "var(--bg)" }}>
+    <div className="flex min-h-[calc(100vh-56px)] flex-col bg-app transition-colors">
       <ToastStack toasts={toasts} />
 
-      {/* Mobile sub-nav */}
-      <div className="sticky top-[56px] z-30 flex border-b bg-[var(--bg)] lg:hidden" style={{ borderColor: "var(--border-ink)" }}>
+      {/* Mobile / Tablet sub-nav */}
+      <div className="sticky top-[56px] z-30 flex items-center border-b border-border-ink bg-app/95 backdrop-blur-md lg:hidden">
         {(["write", "coach"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setMobileTab(tab)}
-            className={`mono-label relative flex-1 py-3.5 !text-[11px] transition-colors ${
-              mobileTab === tab ? "" : "!text-[var(--text-faint)]"
-            }`}
-            style={{ color: mobileTab === tab ? "var(--accent-ink)" : undefined }}
+            className={cn(
+              "mono-label relative flex-1 py-3 text-xs font-semibold transition-all duration-150 touch-manipulation",
+              mobileTab === tab ? "text-accent-ink font-bold" : "text-faint hover:text-muted"
+            )}
           >
-            {tab === "write" ? "Write" : "Live Critique"}
+            {tab === "write" ? "Drafting Desk" : "Live Critique"}
             {mobileTab === tab && (
-              <span className="absolute inset-x-0 bottom-0 h-[2px]" style={{ background: "var(--primary)" }} />
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-primary" />
             )}
           </button>
         ))}
@@ -283,94 +291,160 @@ export default function Studio() {
           onClick={() => setShowSettings((v) => !v)}
           aria-label="Toggle settings"
           aria-expanded={showSettings}
-          className="flex w-12 items-center justify-center border-l transition-colors hover:bg-[var(--panel-soft)]"
-          style={{ borderColor: "var(--border-ink)", color: showSettings ? "var(--accent-ink)" : "var(--text-muted)" }}
+          className={cn(
+            "flex h-11 w-12 items-center justify-center border-l border-border-ink transition-colors hover:bg-panel-soft touch-manipulation",
+            showSettings ? "text-accent-ink bg-primary/10" : "text-muted"
+          )}
         >
           <GearIcon />
         </button>
       </div>
 
-      <div className="flex flex-1 overflow-hidden flex-col lg:grid lg:grid-cols-[300px_1fr_380px] lg:h-[calc(100vh-56px)]">
-        {/* 1. Settings Sidebar */}
+      {/* Studio Bento Workstation */}
+      <div className="flex flex-1 flex-col overflow-hidden lg:grid lg:grid-cols-[290px_minmax(0,1fr)_370px] xl:grid-cols-[310px_minmax(0,1fr)_410px] lg:h-[calc(100vh-56px)] p-3 lg:p-4 gap-3 lg:gap-4 bg-app">
+
+        {/* 1. Settings Sidebar (Bento Card #1) */}
         <aside
-          className={`${showSettings ? "flex" : "hidden"} lg:flex flex-col gap-6 overflow-y-auto border-r bg-[var(--panel)] p-5 ${mobileTab === "write" ? "flex" : "hidden lg:flex"} lg:h-full`}
-          style={{ borderColor: "var(--border-ink)" }}
+          className={cn(
+            "bento-card flex flex-col gap-5 p-5 overflow-y-auto transition-all duration-200",
+            showSettings
+              ? "fixed inset-x-3 bottom-3 top-20 z-50 rounded-2xl shadow-elevated bg-panel lg:static lg:inset-auto lg:top-auto lg:z-auto"
+              : "hidden lg:flex"
+          )}
         >
           <div>
-            <div className="mb-4 flex items-center gap-3">
-              <span className="mono-label" style={{ color: "var(--accent-ink)" }}>Nº 01</span>
-              <span className="mono-label">Connection</span>
-              <span className="hairline mb-1 flex-1" style={{ background: "var(--border-ink)" }} />
+            <div className="mb-4 flex items-center gap-2.5">
+              <span className="mono-label text-accent-ink">Nº 01</span>
+              <span className="mono-label text-main">Connection</span>
+              <span className="hairline mb-0.5 flex-1 bg-border-ink" />
             </div>
 
             <div className="mb-4 flex flex-col gap-1.5">
-              <label className="mono-label !text-[10px]" htmlFor="api-base">Base URL</label>
-              <input id="api-base" value={apiBase} onChange={(e) => setApiBase(e.target.value)} placeholder="https://api.openai.com/v1" className={inputCls} style={inputStyle} />
-              <span className="text-[11px] leading-snug" style={{ color: "var(--text-faint)" }}>OpenAI, Ollama, LM Studio, etc.</span>
+              <label className="mono-label text-[10px] text-muted" htmlFor="api-base">
+                Base URL
+              </label>
+              <input
+                id="api-base"
+                value={apiBase}
+                onChange={(e) => setApiBase(e.target.value)}
+                placeholder="https://api.openai.com/v1"
+                className={inputCls}
+              />
+              <span className="text-xs text-faint">OpenAI, Ollama, LM Studio, vLLM.</span>
             </div>
 
             <div className="mb-4 flex flex-col gap-1.5">
-              <label className="mono-label !text-[10px]" htmlFor="api-key">API key</label>
-              <input id="api-key" type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="sk-…" className={inputCls} style={inputStyle} />
-              <span className="text-[11px] leading-snug" style={{ color: "var(--text-faint)" }}>Stored in this browser only.</span>
+              <label className="mono-label text-[10px] text-muted" htmlFor="api-key">
+                API Key
+              </label>
+              <input
+                id="api-key"
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="sk-…"
+                className={inputCls}
+              />
+              <span className="text-xs text-faint">Stored in your browser localStorage only.</span>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <label className="mono-label !text-[10px]" htmlFor="api-model">Model</label>
-                <button onClick={handleFetchModels} className="text-[11px] font-semibold underline decoration-[var(--border-ink)] underline-offset-4 transition-colors hover:decoration-[var(--primary)]" style={{ color: "var(--accent-ink)" }}>
+                <label className="mono-label text-[10px] text-muted" htmlFor="api-model">
+                  Model
+                </label>
+                <button
+                  onClick={handleFetchModels}
+                  className="text-xs font-semibold text-accent-ink underline decoration-border-ink underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded"
+                >
                   Refresh
                 </button>
               </div>
-              <select id="api-model" value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)} className={inputCls} style={inputStyle}>
-                {modelOptions.map((m) => <option key={m} value={m}>{m}</option>)}
+              <select
+                id="api-model"
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                className={inputCls}
+              >
+                {modelOptions.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
               </select>
             </div>
 
-            <div className="mt-5 flex gap-2">
-              <button onClick={saveSettings} className="flex flex-1 items-center justify-center rounded-md px-4 py-2.5 text-[13px] font-semibold transition-colors hover:bg-[var(--primary-hover)]" style={{ background: "var(--text)", color: "var(--bg)" }}>
+            <div className="mt-5 flex gap-2.5">
+              <button
+                onClick={saveSettings}
+                className="flex flex-1 items-center justify-center rounded-lg bg-main px-4 py-2.5 text-xs font-semibold text-app shadow-sm transition-all duration-150 hover:bg-primary-hover active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary"
+              >
                 Save settings
               </button>
-              <button onClick={handleTest} className="rounded-md border px-4 py-2.5 text-[13px] font-semibold transition-colors hover:bg-[var(--panel-soft)]" style={{ borderColor: "var(--border-ink)", color: "var(--text)" }}>
+              <button
+                onClick={handleTest}
+                className="rounded-lg border border-border bg-panel-soft px-4 py-2.5 text-xs font-semibold text-main transition-all duration-150 hover:bg-panel hover:border-primary/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary"
+              >
                 Test
               </button>
             </div>
           </div>
 
-          <div className="border-t pt-4" style={{ borderColor: "var(--border-ink)" }}>
-            <p className="mono-label mb-1.5" style={{ color: "var(--accent-ink)" }}>Fully automatic</p>
-            <p className="text-[11.5px] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-              As you write, the coach re-reads the draft every time you pause — and goes quiet the moment you move.
+          <div className="border-t border-border-ink pt-4">
+            <p className="mono-label mb-1.5 text-accent-ink">Zero-Interruption Loop</p>
+            <p className="text-xs leading-relaxed text-muted">
+              As you write, the coach analyzes your draft whenever you pause for 1.5 seconds. Start typing again and streaming pauses immediately.
             </p>
           </div>
-          <div className="mt-auto border-t pt-4 lg:hidden" style={{ borderColor: "var(--border-ink)" }}>
-            <button onClick={() => setShowSettings(false)} className="w-full rounded-md border py-2.5 text-[13px] font-medium" style={{ borderColor: "var(--border-ink)", color: "var(--text-muted)" }}>
+
+          <div className="mt-auto border-t border-border-ink pt-4 lg:hidden">
+            <button
+              onClick={() => setShowSettings(false)}
+              className="w-full rounded-lg border border-border bg-panel-soft py-2.5 text-xs font-semibold text-main transition-colors hover:bg-panel"
+            >
               Close settings
             </button>
           </div>
         </aside>
 
-        {/* 2. Workspace */}
-        <section className={`${mobileTab === "write" ? "flex" : "hidden"} lg:flex min-h-[60vh] lg:min-h-0 lg:h-full flex-col overflow-hidden`} style={{ background: "var(--bg)" }}>
-          {/* Prompt input */}
-          <div className="border-b px-4 py-3 md:px-5" style={{ borderColor: "var(--border-ink)", background: "var(--panel)" }}>
+        {/* 2. Workspace (Bento Card #2 - Center Editor) */}
+        <section
+          className={cn(
+            "bento-card flex flex-col overflow-hidden min-h-[65vh] lg:min-h-0",
+            mobileTab === "write" ? "flex" : "hidden lg:flex"
+          )}
+        >
+          {/* Prompt input bar */}
+          <div className="border-b border-border-ink bg-panel-soft/60 px-4 py-3.5 md:px-5">
             <div className="mb-2 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-3">
-                <span className="mono-label" style={{ color: "var(--accent-ink)" }}>Nº 02</span>
-                <span className="mono-label">Task</span>
+              <div className="flex items-center gap-2.5">
+                <span className="mono-label text-accent-ink">Nº 02</span>
+                <span className="mono-label text-main">Writing Task / Prompt</span>
               </div>
               <div className="flex gap-2">
                 <select
-                  onChange={(e) => { if (e.target.value) { setPromptNow(e.target.value); setLS(KEYS.prompt, e.target.value); scheduleLiveAnalysis(400); } }}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setPromptNow(e.target.value);
+                      setLS(KEYS.prompt, e.target.value);
+                      scheduleLiveAnalysis(400);
+                    }
+                  }}
                   defaultValue=""
-                  className="max-w-[160px] rounded-md border px-2 py-1.5 text-[12px] outline-none"
-                  style={inputStyle}
+                  className="max-w-[170px] rounded-md border border-border bg-input-bg px-2.5 py-1 text-xs text-main outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   aria-label="Load a saved prompt"
                 >
                   <option value="">Load saved…</option>
-                  {savedPrompts.map((p) => <option key={p} value={p}>{p.length > 40 ? p.slice(0, 40) + "…" : p}</option>)}
+                  {savedPrompts.map((p) => (
+                    <option key={p} value={p}>
+                      {p.length > 36 ? p.slice(0, 36) + "…" : p}
+                    </option>
+                  ))}
                 </select>
-                <button onClick={handleSavePrompt} className="rounded-md border px-3 py-1.5 text-[11px] font-semibold transition-colors hover:bg-[var(--panel-soft)]" style={{ borderColor: "var(--border-ink)", color: "var(--text)" }}>
+                <button
+                  onClick={handleSavePrompt}
+                  className="rounded-md border border-border bg-panel px-3 py-1 text-xs font-semibold text-main transition-all duration-150 hover:bg-panel-soft hover:border-primary/40 active:scale-[0.97] focus-visible:ring-1 focus-visible:ring-primary"
+                >
                   Save
                 </button>
               </div>
@@ -378,72 +452,115 @@ export default function Studio() {
             <textarea
               id="prompt-input"
               value={prompt}
-              onChange={(e) => { setPromptNow(e.target.value); scheduleLiveAnalysis(1500); }}
+              onChange={(e) => {
+                setPromptNow(e.target.value);
+                scheduleLiveAnalysis(1500);
+              }}
               rows={2}
-              placeholder="Paste your question or essay prompt here…"
-              className="w-full resize-none rounded-md border px-3 py-2.5 text-[13px] leading-relaxed outline-none transition-shadow focus:border-[var(--primary)] focus:ring-2 focus:ring-[rgba(255,107,53,0.18)]"
-              style={inputStyle}
+              placeholder="Paste your essay prompt, question, or composition goal here…"
+              className="w-full resize-none rounded-lg border border-border bg-input-bg px-3.5 py-2 text-sm text-main leading-relaxed outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-faint"
             />
           </div>
 
-          {/* Main Editor */}
+          {/* Main Writing Surface */}
           <div className="flex flex-1 flex-col overflow-hidden p-4 md:p-5">
-            <div className="mb-2 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="mono-label" style={{ color: "var(--accent-ink)" }}>Nº 03</span>
-                <span className="mono-label">Draft</span>
+            <div className="mb-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className="mono-label text-accent-ink">Nº 03</span>
+                <span className="mono-label text-main">Draft Surface</span>
               </div>
               <div className="flex items-center gap-3">
-                <label className="inline-flex cursor-pointer items-center gap-1.5 text-[12px] font-semibold transition-colors hover:opacity-80" style={{ color: "var(--accent-ink)" }}>
+                <label className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-accent-ink transition-opacity hover:opacity-80">
                   <ImportIcon />
-                  Import .txt / .md
-                  <input ref={fileInputRef} type="file" accept=".txt,.md" className="hidden" onChange={(e) => handleFile(e.target.files?.[0] || undefined)} />
+                  <span>Import .txt / .md</span>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".txt,.md"
+                    className="hidden"
+                    onChange={(e) => handleFile(e.target.files?.[0] || undefined)}
+                  />
                 </label>
-                <span className="mono-label !text-[10px]" style={{ color: "var(--text-faint)" }}>{saveStatus}</span>
+                <span className="mono-label text-[10px] text-faint">
+                  {saveStatus}
+                </span>
               </div>
             </div>
 
-            <div className="flex flex-1 flex-col overflow-hidden rounded-lg border bg-[var(--panel)]" style={{ borderColor: "var(--border-ink)", boxShadow: "var(--shadow)" }}>
+            {/* Paper Desk Textarea with Telemetry HUD */}
+            <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border/80 bg-panel shadow-subtle">
               <textarea
                 id="editor"
                 value={draft}
-                onChange={(e) => { setDraftNow(e.target.value); scheduleLiveAnalysis(1500); }}
-                placeholder="Write your response here. The coach reads along — pause for a beat and the critique updates on the right."
-                className="flex-1 w-full resize-none border-0 bg-transparent p-5 text-[15.5px] leading-[1.8] outline-none placeholder:text-[var(--text-faint)] md:p-6"
-                style={{ fontFamily: '"Newsreader", Georgia, serif', color: "var(--text)" }}
+                onChange={(e) => {
+                  setDraftNow(e.target.value);
+                  scheduleLiveAnalysis(1500);
+                }}
+                placeholder="Write your response here. The coach reads along silently — pause for a beat and feedback streams in the margin on the right."
+                className="flex-1 w-full resize-none border-0 bg-transparent p-5 font-serif text-[16px] leading-[1.8] text-main outline-none placeholder:text-faint md:p-6"
+                aria-label="Your Draft"
               />
-              <div className="flex h-10 items-center justify-between border-t px-4 md:px-5" style={{ borderColor: "var(--border-ink)", background: "var(--panel-soft)" }}>
-                <div className="mono-label !tracking-[0.08em]">
-                  <span style={{ color: "var(--text)" }}>{wordCount}</span>
-                  <span style={{ color: "var(--text-faint)" }}> words · </span>
-                  <span style={{ color: "var(--text)" }}>{charCount}</span>
-                  <span style={{ color: "var(--text-faint)" }}> chars · </span>
-                  <span style={{ color: "var(--text)" }}>{readTime}</span>
+
+              {/* Linear-style Telemetry HUD */}
+              <div
+                className="flex h-11 items-center justify-between border-t border-border-ink bg-panel-soft/80 px-4 md:px-5 font-mono text-xs tabular-nums"
+                aria-live="polite"
+              >
+                <div className="flex items-center gap-2 text-muted">
+                  <span className="font-semibold text-main">{wordCount}</span>
+                  <span className="text-faint">words</span>
+                  <span className="text-faint">·</span>
+                  <span className="font-semibold text-main">{charCount}</span>
+                  <span className="text-faint">chars</span>
+                  <span className="text-faint">·</span>
+                  <span className="font-semibold text-main">{readTime}</span>
+                  <span className="text-faint">read</span>
                 </div>
-                <div className="mono-label !tracking-[0.08em]" style={{ color: liveColor }}>{liveLabel.replace(/\p{Extended_Pictographic}/gu, "").replace("●", "").trim()}</div>
+                <div
+                  className="mono-label text-[10px] font-bold tracking-wider"
+                  style={{ color: liveColor }}
+                >
+                  {liveLabel.replace(/\p{Extended_Pictographic}/gu, "").replace("●", "").trim()}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 3. Feedback Panel */}
-        <section className={`${mobileTab === "coach" ? "flex" : "hidden"} lg:flex flex-col border-l bg-[var(--panel)] overflow-hidden min-h-[60vh] lg:min-h-0 lg:h-full`} style={{ borderColor: "var(--border-ink)" }}>
-          <div className="flex items-center justify-between border-b px-4 py-3 md:px-5" style={{ borderColor: "var(--border-ink)" }}>
-            <div className="flex items-center gap-3">
-              <span className="mono-label" style={{ color: "var(--accent-ink)" }}>Nº 04</span>
-              <span className="mono-label">Live critique</span>
+        {/* 3. Feedback Panel (Bento Card #3 - Right Margin) */}
+        <section
+          className={cn(
+            "bento-card flex flex-col overflow-hidden min-h-[65vh] lg:min-h-0",
+            mobileTab === "coach" ? "flex" : "hidden lg:flex"
+          )}
+        >
+          <div className="flex items-center justify-between border-b border-border-ink bg-panel-soft/60 px-4 py-3.5 md:px-5">
+            <div className="flex items-center gap-2.5">
+              <span className="mono-label text-accent-ink">Nº 04</span>
+              <span className="mono-label text-main">Live Critique</span>
             </div>
             {statusChip(coachStatus)}
           </div>
 
-          <div ref={feedbackRef} className="flex-1 overflow-y-auto p-5 md:p-6">
-            {!hasFeedback ? (
+          <div
+            ref={feedbackRef}
+            className="flex-1 overflow-y-auto p-5 md:p-6"
+            aria-live="polite"
+          >
+            {coachStatus === "Reviewing..." && !feedbackHtml ? (
+              /* Phase 4 Shimmer Loading Skeleton */
+              <div className="flex flex-col gap-4 animate-pulse">
+                <div className="h-4 w-28 rounded skeleton-shimmer" />
+                <div className="h-10 w-full rounded-lg skeleton-shimmer" />
+                <div className="mt-2 h-4 w-32 rounded skeleton-shimmer" />
+                <div className="h-14 w-full rounded-lg skeleton-shimmer" />
+                <div className="mt-2 h-4 w-36 rounded skeleton-shimmer" />
+                <div className="h-16 w-full rounded-lg skeleton-shimmer" />
+              </div>
+            ) : !hasFeedback ? (
               <div className="flex h-full flex-col justify-center">
-                <div className="mx-auto max-w-[300px]">
-                  <p
-                    className="text-[22px] leading-snug tracking-[-0.01em]"
-                    style={{ fontFamily: '"Newsreader", serif', fontStyle: "italic", color: "var(--text)" }}
-                  >
+                <div className="mx-auto max-w-[320px]">
+                  <p className="font-serif italic text-xl tracking-tight text-main">
                     The margin is listening.
                   </p>
                   <div className="mt-6 flex flex-col gap-3">
@@ -452,22 +569,33 @@ export default function Studio() {
                       { n: "02", t: "Pause for 1.5 seconds" },
                       { n: "03", t: "Marks stream in here" },
                     ].map((s) => (
-                      <div key={s.n} className="flex items-baseline gap-3 border-t pt-2.5" style={{ borderColor: "var(--border-ink)" }}>
-                        <span className="mono-label" style={{ color: "var(--text-faint)" }}>{s.n}</span>
-                        <span className="text-[12.5px]" style={{ color: "var(--text-muted)" }}>{s.t}</span>
+                      <div
+                        key={s.n}
+                        className="flex items-baseline gap-3 border-t border-border-ink pt-3"
+                      >
+                        <span className="mono-label text-faint">{s.n}</span>
+                        <span className="text-xs font-medium text-muted">{s.t}</span>
                       </div>
                     ))}
                   </div>
-                  <p className="mono-label mt-6 !tracking-[0.08em]" style={{ color: "var(--text-faint)" }}>
+                  <p className="mono-label mt-6 text-[10px] text-faint">
                     Keep typing and the stream cancels instantly
                   </p>
                 </div>
               </div>
             ) : (
-              <div className="prose-ai" dangerouslySetInnerHTML={{ __html: feedbackHtml || `<div style="color:var(--text-muted)">Listening… start typing to see critique.</div>` }} />
+              <div
+                className="prose-ai"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    feedbackHtml ||
+                    `<div class="text-muted text-sm">Listening… start typing to see critique.</div>`,
+                }}
+              />
             )}
           </div>
         </section>
+
       </div>
     </div>
   );
