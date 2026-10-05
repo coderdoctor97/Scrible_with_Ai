@@ -7,6 +7,7 @@ export const KEYS = {
   draft: "scribe_draft",
   savedPrompts: "scribe_saved_prompts",
   theme: "scribe_theme",
+  liveCritique: "scribe_live_critique",
 } as const;
 
 export function getLS(key: string, fallback: string): string {
