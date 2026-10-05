@@ -4,7 +4,7 @@ This repo was converted from a single-file prototype (`ai_guided_writing.html`) 
 
 ## Prime directive
 
-**Do not add or remove features.** The studio is feature-frozen at prototype parity. The landing page is new but must remain open-source marketing only — no paywalls, no fake pricing, no additional app features. Ask before any major decision.
+**Do not add or remove features unless explicitly requested.** The original studio behavior is the baseline; maintainer-approved extensions are permitted. Keep the landing page open-source marketing only — no paywalls or fake pricing. Ask before any major decision.
 
 ## Stack
 
@@ -31,16 +31,18 @@ This repo was converted from a single-file prototype (`ai_guided_writing.html`) 
 ## Behavior to preserve
 
 1. Live analysis: **8-word minimum**, **1.5 s debounce** after `input`, fingerprint dedupe (`prompt:::draft`), `AbortController` cancels prior stream, streams via `fetch` + `reader.read()` + `data:` line parsing, `temperature: 0.3`, renders with `marked`.
-2. Auto-save: **600 ms** debounce to `localStorage` for `scribe_draft` + `scribe_prompt`; `Save Settings` writes `scribe_api_base` / `scribe_api_key` / `scribe_model`.
-3. Metrics: `words = split(/\s+/).filter(Boolean).length`, `chars = trim().length`, `read = ceil(words/200)`.
-4. Theme: `document.documentElement.classList.toggle("dark")` + `scribe_theme` in localStorage.
-5. File import: `FileReader.readAsText`, immediately updates draft and schedules analysis.
-6. Saved prompts: JSON array at `scribe_saved_prompts`, deduped.
+2. Review mode: the persisted `scribe_live_critique` switch pauses automatic reviews; `Review now` explicitly runs a review without the live-mode word minimum.
+3. Auto-save: **600 ms** debounce to `localStorage` for `scribe_draft` + `scribe_prompt`; `Save Settings` writes `scribe_api_base` / `scribe_api_key` / `scribe_model`.
+4. Metrics: `words = split(/\s+/).filter(Boolean).length`, `chars = trim().length`, `read = ceil(words/200)`.
+5. Theme: `document.documentElement.classList.toggle("dark")` + `scribe_theme` in localStorage.
+6. File import: `FileReader.readAsText`, immediately updates draft and schedules analysis only when Live Critique is enabled.
+7. Saved prompts: JSON array at `scribe_saved_prompts`, deduped.
+8. Review actions: copy the Concrete Suggestion section as raw Markdown; export question + answer as Markdown, Word-compatible `.doc`, or print-to-PDF with Markdown rendered.
 
 ## Responsiveness
 
 - Desktop: `lg:grid-cols-[300px_1fr_380px]` with `lg:h-[calc(100vh-56px)]` and independent scroll.
-- Mobile: stacked, with `Write` / `Live Critique` tabs and collapsible settings drawer (`showSettings`). Do not reintroduce a 3-col grid on mobile.
+- Mobile: stacked, with `Write` / `Critique` tabs and collapsible settings drawer (`showSettings`). Do not reintroduce a 3-col grid on mobile.
 
 ## Skills — strict regulation
 

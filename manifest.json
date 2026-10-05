@@ -4,13 +4,14 @@
   "convertedFrom": "ai_guided_writing.html (single-file prototype, 590 lines)",
   "convertedAt": "2026-09-07",
   "stack": "Vite + React 18 + TypeScript + React Router + Tailwind CSS 3 + Framer Motion + marked",
-  "featurePolicy": "freeze — no features added or removed; 1:1 parity with prototype",
+  "featurePolicy": "prototype behavior preserved with user-requested on-demand review, Markdown suggestion copy, and question-answer exports",
   "featuresPreserved": [
     "Header: logo ScribeAI + Live AI Coach badge + theme toggle (localStorage) + Clear All Data",
     "API Settings: Base URL, API Key, Model select, Refresh (/models), Save Settings, Test (/chat/completions)",
     "Task/Prompt: textarea, Save prompt, Load saved dropdown (persisted array)",
-    "Draft editor: serif textarea, placeholder, word count, char count, read time, live indicator, save status, Import .txt/.md, auto-save 600ms, localStorage",
-    "Live Critique: Listening/Reviewing.../Live/Error badges, pulse animation, empty state, streaming markdown via marked, SSE parsing, AbortController, fingerprint dedupe, 8-word minimum, 1.5s debounce",
+    "Draft editor: serif textarea, placeholder, word count, char count, read time, live indicator, save status, Import .txt/.md, auto-save 600ms, localStorage, export question + answer as .md/.doc/PDF",
+    "Live Critique: persisted live/manual toggle, Review now action, Listening/Reviewing.../Live/Reviewed/Paused/Error statuses, streaming markdown via marked, SSE parsing, AbortController, fingerprint dedupe, 8-word live minimum, 1.5s debounce",
+    "Review tools: copy the Concrete Suggestion section as Markdown; render Markdown for Word-compatible DOC and print-to-PDF exports",
     "Toasts, dark/light CSS variables, 3-column layout (280px 1fr 340px) responsive"
   ],
   "routes": {
